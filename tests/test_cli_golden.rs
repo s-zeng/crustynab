@@ -180,7 +180,10 @@ fn format_short_date(date: NaiveDate) -> String {
 fn golden_polars_print() {
     let cfg = make_config(true);
     let (header, report_display, totals) = run_report(&cfg).unwrap();
-    unsafe { std::env::set_var("POLARS_FMT_MAX_ROWS", "-1") };
+    unsafe {
+        std::env::set_var("POLARS_FMT_MAX_ROWS", "-1");
+        std::env::set_var("POLARS_TABLE_WIDTH", "200");
+    };
     let df = report_display.collect().unwrap();
     let totals_df = totals.collect().unwrap();
     let output = format!("{header}\n{df}\nCategory group totals\n{totals_df}\n");
